@@ -1,21 +1,17 @@
-import { Button } from "@repo/ui/components/ui/button";
-import { useState } from "react";
-
 import "@repo/ui/globals.css";
+import { Route, Routes } from "react-router-dom";
+import Home from "./page/Home";
+import Login from "./page/Login";
+import Register from "./page/Register";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-xl font-bold mb-2">This is a Vite application</h1>
-      <p className="mb-4">
-        This shadcn/ui button is shared between Vite, NextJS and any other
-        application.{" "}
-      </p>
-      <Button onClick={() => setCount((count) => count + 1)}>
-        count is {count}
-      </Button>
+    <div className="h-screen container mx-auto p-4 flex items-center justify-center bg-black">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </div>
   );
 }
