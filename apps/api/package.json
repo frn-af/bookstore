@@ -8,7 +8,9 @@
     "build": "tsup",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "db:migrate": "tsup ./src/db/migrate.ts && node dist/migrate.js",
+    "db:generate": "drizzle-kit generate:pg --schema src/entity/*.ts --out ./.drizzle"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",
