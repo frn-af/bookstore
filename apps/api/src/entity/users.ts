@@ -6,7 +6,7 @@ export const users = pgTable("users", {
   email: text("email").notNull(),
   password: text("password").notNull(),
   isAdmin: integer("isAdmin").default(0).notNull(),
-  points: integer("points").default(0).notNull(),
+  points: integer("points").default(100).notNull(),
 });
 
 export type User = typeof users.$inferSelect;

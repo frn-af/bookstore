@@ -1,4 +1,5 @@
 import { compare, genSalt, hash } from "bcrypt";
+import { Response } from "express";
 import { sign } from "jsonwebtoken";
 import { UserInsert } from "../entity/users";
 import { createUser, getUserByEmail } from "../repository/user";
@@ -22,16 +23,16 @@ const hashPassword = (password: string) => {
 const comparePassword = (password: string, hash: string) => {
   return compare(password, hash);
 };
-export const signUp = async (data: UserInsert) => {
+export const signUp = async (data: UserInsert, res: Response) => {
   const { username, email, password } = data;
   if (!username || !email || !password) {
-    throw new Error("Missing required fields");
+    return res.json({ error: "Missing required fields" });
   }
-  const user = await getUserByEmail(email);
+  const user = await getUserByEmail(data.email);
   if (user.length) {
-    throw new Error("User already exists");
+    return res.json({ error: "User already exists" });
   }
-  const hash = (await hashPassword(password)) as string;
+  const hash = (await hashPassword(data.password)) as string;
   const newUser = await createUser({
     ...data,
     password: hash,

@@ -1,6 +1,6 @@
 import "@repo/ui/globals.css";
 import { Route, Routes } from "react-router-dom";
-import { Toaster } from "sonner";
+import { Toaster } from "./component/sonner";
 import Home from "./page/Home";
 import Login from "./page/Login";
 import Register from "./page/Register";

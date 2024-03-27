@@ -29,7 +29,8 @@ const Register = () => {
         navigate("/login");
       }
     } catch (error) {
-      console.log("🚀 ~ return ~ error:", error);
+      console.log("🚀 ~ RegisterUser ~ error:", error);
+      toast.error("Internal Server Error");
     }
   };
   return (
