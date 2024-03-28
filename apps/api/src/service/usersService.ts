@@ -1,6 +1,6 @@
 import { compare, genSalt, hash } from "bcrypt";
 import { Response } from "express";
-import { sign } from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import { UserInsert } from "../entity/users";
 import { createUser, getUserByEmail } from "../repository/user";
 
@@ -60,7 +60,8 @@ export const signIn = async (data: UserInsert) => {
     throw new Error("Invalid password");
   }
   const payload = {
-    User: user,
+    email: user[0]!.email,
+    username: user[0]!.username,
   };
 
   return payload;
@@ -72,7 +73,7 @@ export const verifyToken = (token: string) => {
       reject("No token provided");
     }
 
-    sign(token, "secret", (err, decoded) => {
+    verify(token, "secret", (err, decoded) => {
       if (err) {
         reject("Invalid token");
       }

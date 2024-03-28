@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Register = () => {
   const [data, setData] = useState({
@@ -11,6 +12,7 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const { dispatch }: any = useAuthContext();
   const navigate = useNavigate();
   const RegisterUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,6 +26,9 @@ const Register = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
+        localStorage.setItem("user", JSON.stringify(data));
+        dispatch({ type: "LOGIN", payload: data });
+
         setData({ username: "", email: "", password: "" });
         toast.success("User registered successfully");
         navigate("/login");

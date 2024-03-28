@@ -4,12 +4,14 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Login = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+  const { dispatch }: any = useAuthContext();
   const navigate = useNavigate();
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,6 +25,11 @@ const Login = () => {
         toast.error(data.error);
       } else {
         setData({ email: "", password: "" });
+
+        localStorage.setItem("user", JSON.stringify(data));
+
+        dispatch({ type: "LOGIN", payload: data });
+
         toast.success("login successfully, wellcome back");
         navigate("/");
       }
