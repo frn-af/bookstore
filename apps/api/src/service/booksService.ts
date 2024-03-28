@@ -2,6 +2,7 @@ import { BookInsert, TagInsert } from "../entity/books";
 import {
   createBook,
   createTags,
+  deleteBookById,
   getBookById,
   getBooks,
   getBooksByTag,
@@ -10,20 +11,12 @@ import {
 
 export const getAllBooks = async () => {
   const books = await getBooks();
-  if (!books.length) {
-    throw new Error("No books found");
-  }
   return books;
 };
 
 export const getBook = async (id: number) => {
   const book = await getBookById(id);
   return book[0];
-};
-
-export const getAllBooksByTag = async (tag: string) => {
-  const books = await getBooksByTag(tag);
-  return books;
 };
 
 export const getBooksByTags = async (tags: string[]) => {
@@ -35,24 +28,6 @@ export const getBooksByTags = async (tags: string[]) => {
   return books;
 };
 
-export const getBooksByTagAndPrice = async (tag: string, price: number) => {
-  const books = await getBooksByTag(tag);
-  const filteredBooks = books.filter((filter) => filter.books.price < price);
-  return filteredBooks;
-};
-
-export const getBooksByPrice = async (price: number) => {
-  const books = await getBooks();
-  const filteredBooks = books.filter((filter) => filter.price < price);
-  return filteredBooks;
-};
-
-export const getBooksByAuthor = async (author: string) => {
-  const books = await getBooks();
-  const filteredBooks = books.filter((filter) => filter.author === author);
-  return filteredBooks;
-};
-
 export const getBooksByTitle = async (title: string) => {
   const books = await getBooks();
   const filteredBooks = books.filter((filter) => filter.title === title);
@@ -60,6 +35,13 @@ export const getBooksByTitle = async (title: string) => {
 };
 
 export const addBook = async (data: BookInsert) => {
+  if (!data) {
+    throw new Error("Missing required fields");
+  }
+  const exists = await getBooksByTitle(data.title);
+  if (exists.length) {
+    throw new Error("Book already exists");
+  }
   const book = await createBook(data);
   const newBook = await getBook(book[0]!.id);
   return newBook;
@@ -70,6 +52,10 @@ export const editBook = async (id: number, data: BookInsert) => {
   if (!book) {
     throw new Error("books not found");
   }
+  const exists = await getBooksByTitle(data.title);
+  if (exists) {
+    throw new Error(`Book with ${data.title} already exists`);
+  }
   const updatedBook = await updateBook(id, data);
   return updatedBook;
 };
@@ -77,4 +63,22 @@ export const editBook = async (id: number, data: BookInsert) => {
 export const addTag = async (data: TagInsert) => {
   const tag = await createTags(data);
   return tag;
+};
+
+export const delBook = async (id: number) => {
+  const book = await getBook(id);
+  if (!book) {
+    throw new Error("Book not found");
+  }
+  const deletedBook = await deleteBookById(id);
+  return deletedBook;
+};
+
+export const delTag = async (id: number) => {
+  const tag = await getBook(id);
+  if (!tag) {
+    throw new Error("Tag not found");
+  }
+  const deletedTag = await deleteBookById(id);
+  return deletedTag;
 };

@@ -11,7 +11,7 @@ export const books = pgTable("books", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   author: text("author").notNull(),
-  description: text("description").notNull(),
+  description: text("description"),
   price: integer("price").notNull(),
   image: text("image").notNull(),
 });

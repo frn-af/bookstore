@@ -36,7 +36,7 @@ export const createBookTag = async (data: {
   return await db.insert(booksTags).values(data).returning();
 };
 
-export const deleteBook = async (id: number) => {
+export const deleteBookById = async (id: number) => {
   return await db.delete(books).where(eq(books.id, id)).returning();
 };
 
