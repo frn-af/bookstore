@@ -26,11 +26,11 @@ const comparePassword = (password: string, hash: string) => {
 export const signUp = async (data: UserInsert, res: Response) => {
   const { username, email, password } = data;
   if (!username || !email || !password) {
-    return res.json({ error: "Missing required fields" });
+    throw new Error("Missing required fields");
   }
   const user = await getUserByEmail(data.email);
   if (user.length) {
-    return res.json({ error: "User already exists" });
+    throw new Error("User already exists");
   }
   const hash = (await hashPassword(data.password)) as string;
   const newUser = await createUser({
@@ -40,18 +40,7 @@ export const signUp = async (data: UserInsert, res: Response) => {
   const payload = {
     User: newUser,
   };
-  const jwtToken = sign(
-    payload,
-    "secret",
-    { expiresIn: "1h" },
-    (err, token) => {
-      if (err) {
-        throw new Error("Internal Server Error");
-      }
-      return token;
-    },
-  );
-  return jwtToken;
+  return payload;
 };
 
 export const signIn = async (data: UserInsert) => {
@@ -74,18 +63,7 @@ export const signIn = async (data: UserInsert) => {
     User: user,
   };
 
-  const jwtToken = sign(
-    payload,
-    "secret",
-    { expiresIn: "1h" },
-    (err, token) => {
-      if (err) {
-        throw new Error("Internal Server Error");
-      }
-      return token;
-    },
-  );
-  return jwtToken;
+  return payload;
 };
 
 export const verifyToken = (token: string) => {
