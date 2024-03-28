@@ -59,3 +59,25 @@ export const deleteBookTag = async (data: {
 export const updateBook = async (id: number, data: BookInsert) => {
   return await db.update(books).set(data).where(eq(books.id, id)).returning();
 };
+
+export const updateTag = async (id: number, data: TagInsert) => {
+  return await db.update(tags).set(data).where(eq(tags.id, id)).returning();
+};
+
+export const updateBookTag = async (data: {
+  bookId: number;
+  tagId: number;
+  newTagId: number;
+}) => {
+  return await db
+    .update(booksTags)
+    .set({ tagId: data.newTagId })
+    .where(
+      and(eq(booksTags.tagId, data.tagId), eq(booksTags.bookId, data.bookId)),
+    )
+    .returning();
+};
+
+export const getBookTags = async (id: number) => {
+  return await db.select().from(booksTags).where(eq(booksTags.bookId, id));
+};

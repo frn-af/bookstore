@@ -58,3 +58,4 @@ export const booksTagsRelations = relations(booksTags, ({ one }) => ({
 export type Book = typeof books.$inferSelect;
 export type BookInsert = typeof books.$inferInsert;
 export type Tag = typeof tags.$inferSelect;
+export type TagInsert = typeof tags.$inferInsert;
