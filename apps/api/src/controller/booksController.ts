@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { getTags } from "../repository/books";
 import {
   addBook,
   addTag,
   delBook,
   editBook,
   getAllBooks,
+  getAllTag,
   getBook,
   getBooksByTags,
 } from "../service/booksService";
@@ -75,7 +75,7 @@ export const getBooksByTag = async (req: Request, res: Response) => {
 
 export const getTagsList = async (req: Request, res: Response) => {
   try {
-    const tags = await getTags();
+    const tags = await getAllTag();
     if (tags) res.status(200).json(tags);
     else res.status(404).json({ message: "Tags not found" });
   } catch (error: any) {

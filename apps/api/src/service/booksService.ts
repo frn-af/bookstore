@@ -6,6 +6,7 @@ import {
   getBookById,
   getBooks,
   getBooksByTag,
+  getTags,
   updateBook,
 } from "../repository/books";
 
@@ -58,6 +59,11 @@ export const editBook = async (id: number, data: BookInsert) => {
   }
   const updatedBook = await updateBook(id, data);
   return updatedBook;
+};
+
+export const getAllTag = async () => {
+  const tags = await getTags();
+  return tags;
 };
 
 export const addTag = async (data: TagInsert) => {

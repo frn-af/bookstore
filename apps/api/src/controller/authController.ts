@@ -32,12 +32,3 @@ export const login = async (req: Request, res: Response) => {
     res.json({ error: error.message });
   }
 };
-
-export const profile = async (req: Request, res: Response) => {
-  try {
-    res.json({ message: "Profile" });
-  } catch (error: any) {
-    console.log("🚀 ~ profile ~ error:", error);
-    res.json({ error: error.message });
-  }
-};
