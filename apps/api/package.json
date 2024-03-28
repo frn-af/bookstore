@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/**/*.ts",
     "db:migrate": "tsup ./src/db/migrate.ts && node dist/migrate.js",
-    "db:generate": "drizzle-kit generate:pg --schema src/entity/*.ts --out ./.drizzle"
+    "db:generate": "drizzle-kit generate:pg --schema src/entity/*.ts --out ./.drizzle",
+    "db:studio": "drizzle-kit studio --port 5432 --verbose"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",
@@ -23,7 +24,8 @@
     "express": "^4.18.3",
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

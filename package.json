@@ -10,7 +10,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "ui:add": "pnpm --filter @repo/ui ui:add",
     "db:generate": "pnpm --filter api db:generate",
-    "db:migrate": "pnpm --filter api db:migrate"
+    "db:migrate": "pnpm --filter api db:migrate",
+    "db:studio": "pnpm --filter api db:studio"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
