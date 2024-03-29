@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../../../app/api";
 import { Book } from "./getBookslist";
 
-const getBookDetail = (book_id: string): Promise<Book> => {
+const getBookDetail = async (book_id: string): Promise<Book> => {
   return api.get(`/books/${book_id}`).then((res) => res.data);
 };
 

@@ -17,7 +17,7 @@ export const getAllBooks = async () => {
 
 export const getBook = async (id: number) => {
   const book = await getBookById(id);
-  return book[0];
+  return book;
 };
 
 export const getBooksByTags = async (tags: string[]) => {
@@ -29,20 +29,20 @@ export const getBooksByTags = async (tags: string[]) => {
   return books;
 };
 
-export const getBooksByTitle = async (title: string) => {
-  const books = await getBooks();
-  const filteredBooks = books.filter((filter) => filter.title === title);
-  return filteredBooks;
-};
+// export const getBooksByTitle = async (title: string) => {
+//   const books = await getBooks();
+//   const filteredBooks = books.filter((filter) => filter.books.title === title);
+//   return filteredBooks;
+// };
 
 export const addBook = async (data: BookInsert) => {
   if (!data) {
     throw new Error("Missing required fields");
   }
-  const exists = await getBooksByTitle(data.title);
-  if (exists.length) {
-    throw new Error("Book already exists");
-  }
+  // const exists = await getBooksByTitle(data.title);
+  // if (exists.length) {
+  //   throw new Error("Book already exists");
+  // }
   const book = await createBook(data);
   const newBook = await getBook(book[0]!.id);
   return newBook;
@@ -53,10 +53,10 @@ export const editBook = async (id: number, data: BookInsert) => {
   if (!book) {
     throw new Error("books not found");
   }
-  const exists = await getBooksByTitle(data.title);
-  if (exists) {
-    throw new Error(`Book with ${data.title} already exists`);
-  }
+  // const exists = await getBooksByTitle(data.title);
+  // if (exists) {
+  // throw new Error(`Book with ${data.title} already exists`);
+  // }
   const updatedBook = await updateBook(id, data);
   return updatedBook;
 };

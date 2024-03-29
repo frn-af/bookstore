@@ -16,42 +16,52 @@ const BookList = () => {
   if (status === "error") {
     return <div>Error: {error.message}</div>;
   }
+  console.log(data);
 
   return (
     <div className="container">
       <div>booklist</div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto ">
         {data &&
-          data.map((book: Book) => {
+          data.map((data: Book) => {
             return (
-              <div key={book.id}>
+              <div key={data.id}>
                 <Card className="row-span-1 rounded-xl">
-                  <Link to={`/books/${book.id}`}>
+                  <Link to={`/books/${data.id}`}>
                     <CardHeader>
                       <div className="flex items-center justify-center border rounded-lg">
                         <img
                           src={
-                            book.image
+                            data.image
                               ? "https://images-na.ssl-images-amazon.com/images/I/51Ga5GuElyL._AC_SX184_.jpg"
                               : "https://images-na.ssl-images-amazon.com/images/I/51Ga5GuElyL._AC_SX184_.jpg"
                           }
-                          alt={book.title}
+                          alt={data.title}
                           width={184}
                           height={184}
                         />
                       </div>
-                      <CardTitle>{book.title}</CardTitle>
+                      <CardTitle>{data.title}</CardTitle>
                     </CardHeader>
                   </Link>
-                  <CardContent className="flex justify-between">
-                    <div className="text-lg">
-                      <p>{book.author}</p>
-                      <p>{book.price} Point</p>
+                  <CardContent className="flex justify-between ">
+                    <div className="text-lg space-y-1">
+                      <p>{data.author}</p>
+                      <p>{data.price} Point</p>
+                      <div className="flex space-x-1">
+                        {data.booksTags.map((tags) => {
+                          return (
+                            <div className="border rounded">
+                              <p className="p-1 text-center text-sm">
+                                {tags.tag.name}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <div className="">
-                      <Button variant={"secondary"} className="rounded">
-                        Add to cart
-                      </Button>
+                    <div>
+                      <Button variant={"outline"}>Add to cart</Button>
                     </div>
                   </CardContent>
                 </Card>

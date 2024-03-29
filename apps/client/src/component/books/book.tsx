@@ -5,7 +5,6 @@ import { useGetBooksDetailQuery } from "./api/getBooksDetail";
 const Book = () => {
   const productId = useParams().id as string;
   const { data, status, error } = useGetBooksDetailQuery(productId);
-
   if (status === "pending") {
     return <div>Loading...</div>;
   }
@@ -13,7 +12,7 @@ const Book = () => {
     toast.error(error.message);
     return <div>{error.message}</div>;
   }
-
+  console.log(data);
   return (
     <div className="h-full w-full flex items-center">
       {data && (
@@ -29,7 +28,7 @@ const Book = () => {
             <div className="border rounded-tr-xl p-4">
               <div className="flex">
                 <div className="grow">
-                  <h1 className="text-5xl underline">{data.title}</h1>
+                  <h1 className="text-5xl underline">{data.id}</h1>
                   <h4 className="text-xl"> Author: {data.author}</h4>
                   <h1 className="text-4xl">{data.price} Point</h1>
                 </div>
@@ -38,7 +37,15 @@ const Book = () => {
                 </div>
               </div>
             </div>
-            <div className="border rounded-br-xl grow p-4">
+            <div className="border rounded-br-xl grow p-4 space-y-1">
+              <h4 className="underline text-xl">tags:</h4>
+              <div className="flex space-x-1">
+                {data.booksTags.map((tags) => (
+                  <div className="border rounded">
+                    <p className="p-1 text-sm">{tags.tag.name}</p>
+                  </div>
+                ))}
+              </div>
               <h4 className="underline text-xl">Description:</h4>
               <p className="text-xl">{data.description}</p>
             </div>

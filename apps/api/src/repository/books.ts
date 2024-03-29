@@ -3,11 +3,28 @@ import { db } from "../db";
 import { BookInsert, TagInsert, books, booksTags, tags } from "../entity/books";
 
 export const getBooks = async () => {
-  return await db.select().from(books);
+  return await db.query.books.findMany({
+    with: {
+      booksTags: {
+        with: {
+          tag: true,
+        },
+      },
+    },
+  });
 };
 
 export const getBookById = async (id: number) => {
-  return await db.select().from(books).where(eq(books.id, id));
+  return await db.query.books.findFirst({
+    where: eq(books.id, id),
+    with: {
+      booksTags: {
+        with: {
+          tag: true,
+        },
+      },
+    },
+  });
 };
 
 export const getBooksByTag = async (tag: string) => {
