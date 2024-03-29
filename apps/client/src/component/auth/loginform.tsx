@@ -9,75 +9,60 @@ import {
 } from "@repo/ui/components/ui/card";
 import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useUserLogin } from "./api/login";
 
-const Register = () => {
+const LoginForm = () => {
   const [data, setData] = useState({
-    username: "",
     email: "",
     password: "",
   });
-  const { dispatch }: any = useAuthContext();
-  const navigate = useNavigate();
-  const RegisterUser = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { username, email, password } = data;
-    try {
-      const { data } = await axios.post("http://localhost:5001/api/register", {
-        username,
-        email,
-        password,
-      });
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        localStorage.setItem("user", JSON.stringify(data));
-        dispatch({ type: "LOGIN", payload: data });
 
-        setData({ username: "", email: "", password: "" });
-        toast.success("User registered successfully");
-        navigate("/login");
+  const navigate = useNavigate();
+  const { dispatch }: any = useAuthContext();
+  const { mutate, error } = useUserLogin();
+
+  const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      mutate(data, {
+        onSuccess: (data) => {
+          localStorage.setItem("user", JSON.stringify(data));
+          dispatch({ type: "LOGIN", payload: data });
+          toast.success("login successfully, wellcome back");
+          navigate("/");
+        },
+      });
+      if (error) {
+        toast.error(error.message);
       }
     } catch (error) {
       console.log("🚀 ~ RegisterUser ~ error:", error);
       toast.error("Internal Server Error");
     }
   };
+
   return (
-    <div className="h-screen container flex items-center justify-center">
+    <>
       <Card className="rounded-2xl w-full md:max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">SignUp</CardTitle>
+          <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Fill field below to login to your account
+            Enter your email below to login to your account terst
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={RegisterUser}>
+          <form onSubmit={loginUser}>
             <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Username</Label>
-                <Input
-                  id="Username"
-                  type="text"
-                  placeholder="Username"
-                  required
-                  value={data.username}
-                  onChange={(e) =>
-                    setData({ ...data, username: e.target.value })
-                  }
-                />
-              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="mail@example.com"
+                  placeholder="m@example.com"
                   required
                   value={data.email}
                   onChange={(e) => setData({ ...data, email: e.target.value })}
@@ -98,20 +83,20 @@ const Register = () => {
                 />
               </div>
               <Button type="submit" className="w-full font-bold">
-                Sign Up
+                Login
               </Button>
             </div>
           </form>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
-            <Link to={"/login"} className="underline">
-              Login
+            Don&apos;t have an account?{" "}
+            <Link to={"/register"} className="underline">
+              Sign up
             </Link>
           </div>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 };
 
-export default Register;
+export default LoginForm;

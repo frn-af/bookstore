@@ -9,37 +9,34 @@ import {
 } from "@repo/ui/components/ui/card";
 import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useUserRegister } from "./api/register";
 
-const Login = () => {
+const RegisterForm = () => {
   const [data, setData] = useState({
+    username: "",
     email: "",
     password: "",
   });
   const { dispatch }: any = useAuthContext();
   const navigate = useNavigate();
-  const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
+  const { mutate, error } = useUserRegister();
+
+  const RegisterUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { email, password } = data;
     try {
-      const { data } = await axios.post("http://localhost:5001/api/login", {
-        email,
-        password,
-      });
-      if (data.error) {
-        toast.error(data.error);
+      mutate(data);
+      if (error) {
+        toast.error(error.message);
       } else {
-        setData({ email: "", password: "" });
-
         localStorage.setItem("user", JSON.stringify(data));
-
         dispatch({ type: "LOGIN", payload: data });
 
-        toast.success("login successfully, wellcome back");
+        setData({ username: "", email: "", password: "" });
+        toast.success("User registered successfully");
         navigate("/");
       }
     } catch (error) {
@@ -48,23 +45,36 @@ const Login = () => {
     }
   };
   return (
-    <div className="h-screen container flex items-center justify-center">
+    <>
       <Card className="rounded-2xl w-full md:max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">SignUp</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account terst
+            Fill field below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={loginUser}>
+          <form onSubmit={RegisterUser}>
             <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Username</Label>
+                <Input
+                  id="Username"
+                  type="text"
+                  placeholder="Username"
+                  required
+                  value={data.username}
+                  onChange={(e) =>
+                    setData({ ...data, username: e.target.value })
+                  }
+                />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="mail@example.com"
                   required
                   value={data.email}
                   onChange={(e) => setData({ ...data, email: e.target.value })}
@@ -85,20 +95,20 @@ const Login = () => {
                 />
               </div>
               <Button type="submit" className="w-full font-bold">
-                Login
+                Sign Up
               </Button>
             </div>
           </form>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link to={"/register"} className="underline">
-              Sign up
+            Already have an account?{" "}
+            <Link to={"/login"} className="underline">
+              Login
             </Link>
           </div>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 };
 
-export default Login;
+export default RegisterForm;

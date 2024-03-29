@@ -38,7 +38,10 @@ export const signUp = async (data: UserInsert, res: Response) => {
     password: hash,
   });
   const payload = {
-    User: newUser,
+    email: newUser[0]!.email,
+    username: newUser[0]!.username,
+    points: newUser[0]!.points,
+    isAdmin: newUser[0]!.isAdmin,
   };
   return payload;
 };
@@ -62,6 +65,8 @@ export const signIn = async (data: UserInsert) => {
   const payload = {
     email: user[0]!.email,
     username: user[0]!.username,
+    points: user[0]!.points,
+    isAdmin: user[0]!.isAdmin,
   };
 
   return payload;

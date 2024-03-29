@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext, useEffect, useReducer } from "react";
 
 export const AuthContext = createContext({});
