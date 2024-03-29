@@ -16,7 +16,6 @@ const authReducer = (state: any, action: any) => {
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, { user: null });
-  console.log(state);
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {

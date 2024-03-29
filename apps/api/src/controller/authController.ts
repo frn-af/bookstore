@@ -4,13 +4,12 @@ import { signIn, signUp } from "../service/usersService";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const email = req.body.email;
-    const result = await signUp(req.body, res);
-    sign(result, "secret", { expiresIn: "1h" }, (err, token) => {
+    const user = await signUp(req.body, res);
+    sign(user, "secret", { expiresIn: "1h" }, (err, token) => {
       if (err) {
         res.json({ error: err?.message });
       }
-      res.status(200).json({ email, token });
+      res.status(200).json({ user, token });
     });
   } catch (error: any) {
     console.log("🚀 ~ register ~ error:", error);

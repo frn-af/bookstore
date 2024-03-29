@@ -16,7 +16,6 @@ const BookList = () => {
   if (status === "error") {
     return <div>Error: {error.message}</div>;
   }
-  console.log(data);
 
   return (
     <div className="container">
@@ -51,7 +50,7 @@ const BookList = () => {
                       <div className="flex space-x-1">
                         {data.booksTags.map((tags) => {
                           return (
-                            <div className="border rounded">
+                            <div key={tags.tag.id} className="border rounded">
                               <p className="p-1 text-center text-sm">
                                 {tags.tag.name}
                               </p>

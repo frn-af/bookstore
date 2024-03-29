@@ -60,7 +60,7 @@ export const signIn = async (data: UserInsert) => {
   const isValid = await comparePassword(password, user[0]!.password);
 
   if (!isValid) {
-    throw new Error("Invalid password");
+    throw new Error("Invalid password or email");
   }
   const payload = {
     email: user[0]!.email,

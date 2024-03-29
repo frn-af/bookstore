@@ -30,9 +30,10 @@ const LoginForm = () => {
     try {
       mutate(data, {
         onSuccess: (data) => {
+          if (data.error) return toast.error(data.error);
           localStorage.setItem("user", JSON.stringify(data));
           dispatch({ type: "LOGIN", payload: data });
-          toast.success("login successfully, wellcome back");
+          toast.success("login Successfully");
           navigate("/");
         },
       });
@@ -40,7 +41,6 @@ const LoginForm = () => {
         toast.error(error.message);
       }
     } catch (error) {
-      console.log("🚀 ~ RegisterUser ~ error:", error);
       toast.error("Internal Server Error");
     }
   };

@@ -28,19 +28,19 @@ const RegisterForm = () => {
   const RegisterUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      mutate(data);
+      mutate(data, {
+        onSuccess: (data) => {
+          if (data.error) return toast.error(data.error);
+          localStorage.setItem("user", JSON.stringify(data));
+          dispatch({ type: "LOGIN", payload: data });
+          toast.success("login Successfully");
+          navigate("/");
+        },
+      });
       if (error) {
         toast.error(error.message);
-      } else {
-        localStorage.setItem("user", JSON.stringify(data));
-        dispatch({ type: "LOGIN", payload: data });
-
-        setData({ username: "", email: "", password: "" });
-        toast.success("User registered successfully");
-        navigate("/");
       }
     } catch (error) {
-      console.log("🚀 ~ RegisterUser ~ error:", error);
       toast.error("Internal Server Error");
     }
   };

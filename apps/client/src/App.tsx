@@ -15,10 +15,10 @@ function App() {
   const { user }: any = useAuthContext();
   return (
     <div className="h-screen container mx-auto my-auto bg-background">
-      {location.pathname != "/login" && location.pathname != "/register" && (
-        <Navbar />
-      )}
       <UserProvider>
+        {location.pathname != "/login" && location.pathname != "/register" && (
+          <Navbar />
+        )}
         <Routes>
           <Route path="*" element={<NotFound />} />
           <Route
