@@ -5,7 +5,7 @@ import RegisterForm from "../registerform";
 const Auth = () => {
   const location = useLocation();
   return (
-    <div className="h-screen container flex items-center justify-center">
+    <div className="container h-screen overflow-hidden flex items-center justify-center">
       {location.pathname === "/login" ? <LoginForm /> : <RegisterForm />}
     </div>
   );

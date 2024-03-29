@@ -74,6 +74,6 @@
     @apply bg-background text-foreground;
   }
   #root {
-    @apply bg-background text-foreground overflow-hidden relative h-screen;
+    @apply bg-background text-foreground relative h-screen;
   }
 }

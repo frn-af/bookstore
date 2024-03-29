@@ -48,9 +48,9 @@ const RegisterForm = () => {
     <>
       <Card className="rounded-2xl w-full md:max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">SignUp</CardTitle>
+          <CardTitle className="text-2xl">Create your account</CardTitle>
           <CardDescription>
-            Fill field below to login to your account
+            Fill the field below to create account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -102,7 +102,7 @@ const RegisterForm = () => {
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
             <Link to={"/login"} className="underline">
-              Login
+              Login here
             </Link>
           </div>
         </CardContent>
