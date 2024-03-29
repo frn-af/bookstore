@@ -6,6 +6,7 @@ import { Toaster } from "./component/sonner";
 import { UserProvider } from "./context/authContext";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Home from "./page/Home";
+import NotFound from "./page/NotFound";
 
 function App() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,6 +15,7 @@ function App() {
     <div className="h-screen container mx-auto my-auto bg-background">
       <UserProvider>
         <Routes>
+          <Route path="*" element={<NotFound />} />
           <Route
             path="/register"
             element={!user ? <Auth /> : <Navigate to={"/"} />}
