@@ -4,7 +4,6 @@ import Auth from "./component/auth/page/auth";
 import Book from "./component/books/book";
 import Navbar from "./component/navbar";
 import { Toaster } from "./component/sonner";
-import { UserProvider } from "./context/authContext";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Home from "./page/Home";
 import NotFound from "./page/NotFound";
@@ -15,25 +14,23 @@ function App() {
   const { user }: any = useAuthContext();
   return (
     <div className="h-screen container mx-auto my-auto bg-background">
-      <UserProvider>
-        {location.pathname != "/login" && location.pathname != "/register" && (
-          <Navbar />
-        )}
-        <Routes>
-          <Route path="*" element={<NotFound />} />
-          <Route
-            path="/register"
-            element={!user ? <Auth /> : <Navigate to={"/"} />}
-          />
-          <Route
-            path="/login"
-            element={!user ? <Auth /> : <Navigate to={"/"} />}
-          />
-          <Route path="/" element={<Home />} />
-          <Route path="/books/:id" element={<Book />} />
-        </Routes>
-        <Toaster />
-      </UserProvider>
+      {location.pathname != "/login" && location.pathname != "/register" && (
+        <Navbar />
+      )}
+      <Routes>
+        <Route
+          path="/register"
+          element={!user ? <Auth /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/login"
+          element={!user ? <Auth /> : <Navigate to={"/"} />}
+        />
+        <Route path="/" element={<Home />} />
+        <Route path="/books/:id" element={<Book />} />
+        <Route path="/*" element={<NotFound />} />
+      </Routes>
+      <Toaster />
     </div>
   );
 }

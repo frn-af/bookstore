@@ -47,7 +47,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full h-20">
+      <div className="h-20 max-w-screen-xl mx-auto">
         <div className="container p-4 flex justify-between items-center">
           <Link to={"/"}>
             <h1 className="text-4xl font-bold">Bookstore</h1>

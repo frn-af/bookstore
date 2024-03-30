@@ -18,9 +18,8 @@ const BookList = () => {
   }
 
   return (
-    <div className="container">
-      <div>booklist</div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto ">
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-auto ">
         {data &&
           data.map((data: Book) => {
             return (
