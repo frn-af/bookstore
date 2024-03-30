@@ -20,7 +20,7 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const user = await signIn(req.body);
-    sign(user, "secret", { expiresIn: "1h" }, (err, token) => {
+    sign(user, "secret", { expiresIn: "24h" }, (err, token) => {
       if (err) {
         res.json({ error: err?.message });
       }

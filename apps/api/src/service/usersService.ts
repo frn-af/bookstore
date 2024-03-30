@@ -2,7 +2,7 @@ import { compare, genSalt, hash } from "bcrypt";
 import { Response } from "express";
 import { verify } from "jsonwebtoken";
 import { UserInsert } from "../entity/users";
-import { createUser, getUserByEmail } from "../repository/user";
+import { createUser, getUserByEmail, getUserByid } from "../repository/user";
 
 const hashPassword = (password: string) => {
   return new Promise((resolve, reject) => {
@@ -35,12 +35,13 @@ export const signUp = async (data: UserInsert, res: Response) => {
   const hash = (await hashPassword(data.password)) as string;
   const newUser = await createUser({
     ...data,
+    points: 100,
     password: hash,
   });
   const payload = {
+    id: newUser[0]!.id,
     email: newUser[0]!.email,
     username: newUser[0]!.username,
-    points: newUser[0]!.points,
     isAdmin: newUser[0]!.isAdmin,
   };
   return payload;
@@ -63,12 +64,27 @@ export const signIn = async (data: UserInsert) => {
     throw new Error("Invalid password or email");
   }
   const payload = {
+    id: user[0]!.id,
     email: user[0]!.email,
     username: user[0]!.username,
-    points: user[0]!.points,
     isAdmin: user[0]!.isAdmin,
   };
 
+  return payload;
+};
+
+export const getUserInfo = async (id: number) => {
+  if (!id) {
+    throw new Error("you must login to get user info");
+  }
+
+  const user = await getUserByid(id);
+  const payload = {
+    email: user[0]!.email,
+    username: user[0]!.username,
+    isAdmin: user[0]!.isAdmin,
+    points: user[0]!.points,
+  };
   return payload;
 };
 

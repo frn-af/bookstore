@@ -11,6 +11,7 @@ import {
   getTagsList,
   updateBook,
 } from "../controller/booksController";
+import { getUserData } from "../controller/userController";
 import { auth } from "../middleware/auth";
 
 export const router: Router = Router();
@@ -26,3 +27,4 @@ router.get("/books/tags", getBooksByTag);
 router.get("/tags", getTagsList);
 router.post("/tags", auth, addNewTag);
 router.delete("/tags/:id", auth, deleteTag);
+router.get("/users/:id", auth, getUserData);

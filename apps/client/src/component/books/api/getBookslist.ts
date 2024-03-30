@@ -17,7 +17,7 @@ export interface Book {
     };
   }[];
 }
-const getAllBooks = (): Promise<Book[]> => {
+const getAllBooks = async (): Promise<Book[]> => {
   return api.get("/books").then((res) => res.data);
 };
 
