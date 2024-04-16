@@ -34,7 +34,11 @@ export const getBookDetail = async (req: Request, res: Response) => {
 
 export const addNewBook = async (req: Request, res: Response) => {
   try {
-    const book = await addBook(req.body);
+    const user = req.body.user;
+    if (user.isAdmin === 0) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const book = await addBook(req.body.book, req.body.tag);
     if (book) res.status(200).json(book);
     else res.status(404).json({ message: "Book not found" });
   } catch (error: any) {
@@ -44,6 +48,10 @@ export const addNewBook = async (req: Request, res: Response) => {
 
 export const updateBook = async (req: Request, res: Response) => {
   try {
+    const user = req.body.user;
+    if (user.isAdmin === 0) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     const book = await editBook(req.params.id as unknown as number, req.body);
     if (book) res.status(200).json(book);
     else res.status(404).json({ message: "Book not found" });
@@ -54,6 +62,10 @@ export const updateBook = async (req: Request, res: Response) => {
 
 export const deleteBook = async (req: Request, res: Response) => {
   try {
+    const user = req.body.user;
+    if (user.isAdmin === 0) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     const id = req.params.id as unknown as number;
     const deletebook = await delBook(id);
     if (deletebook) res.status(200).json(deletebook);

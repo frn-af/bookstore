@@ -35,7 +35,13 @@ export const getBooksByTag = async (tag: string) => {
 };
 
 export const getTags = async () => {
-  return await db.select().from(tags);
+  return await db.query.tags.findMany();
+};
+
+export const getTagsById = async (id: number) => {
+  return await db.query.tags.findFirst({
+    where: eq(tags.id, id),
+  });
 };
 
 export const createBook = async (data: BookInsert) => {

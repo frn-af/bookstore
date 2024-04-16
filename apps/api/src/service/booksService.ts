@@ -1,12 +1,14 @@
-import { BookInsert, TagInsert } from "../entity/books";
+import { BookInsert, Tag, TagInsert } from "../entity/books";
 import {
   createBook,
+  createBookTag,
   createTags,
   deleteBookById,
   getBookById,
   getBooks,
   getBooksByTag,
   getTags,
+  getTagsById,
   updateBook,
 } from "../repository/books";
 
@@ -29,22 +31,29 @@ export const getBooksByTags = async (tags: string[]) => {
   return books;
 };
 
-// export const getBooksByTitle = async (title: string) => {
-//   const books = await getBooks();
-//   const filteredBooks = books.filter((filter) => filter.books.title === title);
-//   return filteredBooks;
-// };
+export const getBooksByTitle = async (title: string) => {
+  const books = await getBooks();
+  const filteredBooks = books.filter((filter) => filter.title === title);
+  return filteredBooks;
+};
 
-export const addBook = async (data: BookInsert) => {
+export const addBook = async (data: BookInsert, tag: Tag[]) => {
   if (!data) {
     throw new Error("Missing required fields");
   }
-  // const exists = await getBooksByTitle(data.title);
-  // if (exists.length) {
-  //   throw new Error("Book already exists");
-  // }
+  const exists = await getBooksByTitle(data.title);
+  if (exists.length) {
+    throw new Error("Book already exists");
+  }
   const book = await createBook(data);
   const newBook = await getBook(book[0]!.id);
+  tag.forEach(async (tag) => {
+    const tagExists = await getTagsById(tag.id);
+    await createBookTag({
+      bookId: newBook!.id,
+      tagId: tagExists!.id,
+    });
+  });
   return newBook;
 };
 
@@ -53,10 +62,10 @@ export const editBook = async (id: number, data: BookInsert) => {
   if (!book) {
     throw new Error("books not found");
   }
-  // const exists = await getBooksByTitle(data.title);
-  // if (exists) {
-  // throw new Error(`Book with ${data.title} already exists`);
-  // }
+  const exists = await getBooksByTitle(data.title);
+  if (exists) {
+    throw new Error(`Book with ${data.title} already exists`);
+  }
   const updatedBook = await updateBook(id, data);
   return updatedBook;
 };
